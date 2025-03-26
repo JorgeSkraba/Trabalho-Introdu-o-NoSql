@@ -1,0 +1,60 @@
+<!-- pessoa.html -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" onclick="IncluirPessoa()">
+  Incluir Pessoa
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Gerenciar Pessoas</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row col-12">
+          <div class="col-md-4">
+            <label for="inputId" class="form-label">ID</label>
+            <input type="number" class="form-control" id="inputId" required />
+          </div>
+          <div class="col-md-8">
+            <label for="inputNome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="inputNome" required />
+          </div>  
+        </div>
+        <div class="row col-12">
+          <div class="col-md-6">
+          <label for="inputFone" class="form-label">Fone</label>
+          <input type="text" class="form-control" id="inputFone" required />
+          </div>
+          <div class="col-md-6">
+          <label for="inputAniversario" class="form-label">Aniversário</label>
+          <input type="date" class="form-control" id="inputAniversario" required />
+          </div>
+        </div>
+        <div class="modal-footer mt-2">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="gravarDados()">Gravar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4"> 
+    <table class="table table-striped" id="tabelaPessoas">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Fone</th>
+          <th>Aniversário</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  
+  <script src="/static/js/pessoa.js"></script>
