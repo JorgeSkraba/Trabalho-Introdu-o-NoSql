@@ -40,6 +40,7 @@ class MedicoModel:
                 "nome": medico.nome,
                 "fone": medico.fone,
                 "aniversario": medico.aniversario,
+                "cpf": medico.cpf,
                 "especializacao": medico.especializacao
             }}
         )

@@ -73,13 +73,11 @@ function editarMedico(pid) {
 
   // Preenche os campos do formulário
   $("#inputId").val(medico.id);
-  //$("#inputId").prop("readonly", true);
   $("#inputId").attr("disabled", false);
   $("#inputNome").val(medico.nome);
   $("#inputFone").val(medico.fone); // se quiser manter o formato original
   $("#inputAniversario").val(medico.aniversario); // formato YYYY-MM-DD
   $("#inputcpf").val(medico.cpf);
-  $("#inputcpf").prop("readonly", true);
   //$("#inputcpf").attr("disabled", true);
   $("#inputespecializacao").val(medico.especializacao);
   $('#staticBackdrop').modal('show');
@@ -190,6 +188,7 @@ function atualizarMedico() {
     nome: $("#inputNome").val(),
     fone: $("#inputFone").val(),
     aniversario: $("#inputAniversario").val(),
+    cpf: $("#inputcpf").val(),
     especializacao: $("#inputespecializacao").val()
 
   };

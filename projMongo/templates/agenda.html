@@ -1,0 +1,76 @@
+<!-- pessoa.html -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" onclick="IncluirAgenda()">
+  Incluir Registro
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Gerenciar Agenda</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row col-12">
+          <div class="col-md-4">
+            <label for="inputId" class="form-label">ID</label>
+            <input type="number" class="form-control" id="inputId" required />
+          </div>
+          <div class="col-md-8">
+            <label for="inputNomePac" class="form-label">Nome do Paciente</label>
+            <select class="form-control" id="inputNomePac" required></select>
+          </div>
+        </div>
+        <div class="row col-12">
+          <div class="col-md-6">
+          <label for="inputFonePac" class="form-label">Fone do Paciente</label>
+          <input type="text" class="form-control" id="inputFonePac" required />
+          </div>
+          <div class="col-md-6">
+            <label for="inputNomeMed" class="form-label">Nome do Médico</label>
+            <select class="form-control" id="inputNomeMed" required></select>
+          </div>
+          <div class="col-md-6">
+            <label for="inputespecializacao" class="form-label">Especialização</label>
+            <input type="text" class="form-control" id="inputespecializacao" required />
+          </div>
+          <div class="col-md-6">
+            <label for="inputhorario" class="form-label">Horário</label>
+            <input type="datetime" class="form-control" id="inputhorario" required />
+          </div>
+          <div class="col-md-6">
+              <label for="inputdia" class="form-label">Dia</label>
+              <input type="date" class="form-control" id="inputdia" required />
+          </div>
+          </div>
+        </div>
+        <div class="modal-footer mt-2">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="gravarDados()">Gravar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4"> 
+    <table class="table table-striped" id="tabelaAgendas">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome Paciente</th>
+          <th>Fone Paciente</th>
+          <th>Nome Médico</th>
+          <th>Especialização</th>
+          <th>Horário</th>
+          <th>Dia</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  
+  <script src="/static/js/agenda.js"></script>

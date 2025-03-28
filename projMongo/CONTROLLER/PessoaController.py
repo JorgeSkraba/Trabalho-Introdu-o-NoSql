@@ -24,7 +24,8 @@ class PessoaController:
             pid=pid,
             nome=data["nome"],
             fone=data["fone"],
-            aniversario=data["aniversario"]
+            aniversario=data["aniversario"],
+            cpf=data["cpf"]
         )
         return self.model.atualizar_pessoa(pessoa)
 

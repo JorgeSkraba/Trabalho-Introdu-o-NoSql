@@ -1,46 +1,55 @@
 # PessoaModel.py
 from pymongo import MongoClient
 
-class Pessoa:
+class Agenda:
     """Entidade que representa uma Pessoa."""
-    def __init__(self, pid, nome, fone, aniversario):
+    def __init__(self, pid, nomePessoa, fonePessoa, nomeMedico, tipoConsulta, horario, dia):
         self.pid = pid
-        self.nome = nome
-        self.fone = fone
-        self.aniversario = aniversario
+        self.nomePessoa = nomePessoa
+        self.fonePessoa = fonePessoa
+        self.nomeMedico = nomeMedico
+        self.tipoConsulta = tipoConsulta
+        self.horario = horario
+        self.dia = dia
 
-class PessoaModel:
+class AgendaModel:
     """Classe responsável pela persistência de dados de Pessoa no MongoDB."""
-    def __init__(self, uri="mongodb://localhost:27017/", dbname="Aula04"):
+    def __init__(self, uri="mongodb://localhost:27017/", dbname="ConsultorioMedico"):
         self.client = MongoClient(uri)
         self.db = self.client[dbname]
-        self.collection = self.db["Pessoas"]
+        self.collection = self.db["Agendas"]
 
     def listar_todos(self):
         cursor = self.collection.find({}, {"_id": 0})
         return list(cursor)
 
-    def criar_pessoa(self, pessoa: Pessoa):
+    def criar_agenda(self, agenda: Agenda):
         doc = {
             "id": self.next_val(),
-            "nome": pessoa.nome,
-            "fone": pessoa.fone,
-            "aniversario": pessoa.aniversario
+            "nomePessoa": agenda.nomePessoa,
+            "fonePessoa": agenda.fonePessoa,
+            "nomeMedico": agenda.nomeMedico,
+            "tipoConsulta": agenda.tipoConsulta,
+            "horario": agenda.horario,
+            "dia": agenda.dia
         }
         self.collection.insert_one(doc)
 
-    def atualizar_pessoa(self, pessoa: Pessoa):
+    def atualizar_agenda(self, agenda: Agenda):
         result = self.collection.update_one(
-            {"id": pessoa.pid},
+            {"id": agenda.pid},
             {"$set": {
-                "nome": pessoa.nome,
-                "fone": pessoa.fone,
-                "aniversario": pessoa.aniversario
+                "nomePessoa": agenda.nomePessoa,
+                "fonePessoa": agenda.fonePessoa,
+                "nomeMedico": agenda.nomeMedico,
+                "tipoConsulta": agenda.tipoConsulta,
+                "horario": agenda.horario,
+                "dia": agenda.dia
             }}
         )
         return result.modified_count  # 0 ou 1
 
-    def deletar_pessoa(self, pid: int):
+    def deletar_agenda(self, pid: int):
         result = self.collection.delete_one({"id": pid})
         return result.deleted_count  # 0 ou 1
     

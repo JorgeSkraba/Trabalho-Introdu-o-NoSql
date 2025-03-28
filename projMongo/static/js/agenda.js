@@ -1,8 +1,8 @@
-// pessoa.js
+// agenda.js
 
 var API_URL = ""; // Se estiver no mesmo servidor Flask, deixe vazio ou "/".
 
-var listaPessoas = [];
+var listaAgendas = [];
 
 /**
  * Formata os telefones.
@@ -59,25 +59,44 @@ function formatarData(dataISO) {
   return `${dia}/${mes}/${ano}`;
 }
 
-function editarPessoa(pid) {
+function formatarHorario(horario) {
+  if (!horario) return "Horário inválido";
+
+  let partes = horario.split(":");
+  if (partes.length !== 2) return "Horário inválido";
+
+  let horas = parseInt(partes[0], 10);
+  let minutos = partes[1];
+
+  // Formato 24h → 12h com AM/PM
+  let periodo = horas >= 12 ? "PM" : "AM";
+  horas = horas % 12 || 12; // Converte 0 para 12 no formato de 12h
+
+  return `${horas}:${minutos} ${periodo}`;
+}
+
+
+function editarAgenda(pid) {
   // Busca a pessoa na variável global
-  const pessoa = listaPessoas.find(p => p.id === pid);
-  if (!pessoa) {
+  const agenda = listaAgendas.find(p => p.id === pid);
+  if (!agenda) {
     Swal.fire({
       icon: 'error',
       title: 'Erro na busca',
-      text: "Pessoa com id:"+pid+" não foi localizada!"
+      text: "Registro com id:"+pid+" não foi localizada!"
     });
     return;
   }
 
   // Preenche os campos do formulário
-  $("#inputId").val(pessoa.id);
+  $("#inputId").val(agenda.id);
   $("#inputId").attr("disabled", false);
-  $("#inputNome").val(pessoa.nome);
-  $("#inputFone").val(pessoa.fone); // se quiser manter o formato original
-  $("#inputAniversario").val(pessoa.aniversario); // formato YYYY-MM-DD
-  $("#inputcpf").val(pessoa.cpf); // formato YYYY-MM-DD
+  $("#inputNomePac").val(agenda.nomePessoa);
+  $("#inputFonePac").val(agenda.fonePessoa); // se quiser manter o formato original
+  $("#inputNomeMed").val(agenda.nomeMedico); // formato YYYY-MM-DD
+  $("#inputespecializacao").val(agenda.tipoConsulta);
+  $("#inputhorario").val(agenda.horario);
+  $("#inputdia").val(agenda.dia);
   $('#staticBackdrop').modal('show');
 
   // Se quiser deixar o ID como somente leitura, pode fazer:
@@ -89,26 +108,28 @@ function editarPessoa(pid) {
 /**
  * Carrega a lista de pessoas e preenche a tabela.
  */
-function carregarPessoas() {
+function carregarAgendas() {
   $.ajax({
-    url: API_URL + "/pessoas",
+    url: API_URL + "/agendas",
     method: "GET",
     success: function(dados) {
-      listaPessoas = dados;
+      listaAgendas = dados;
       console.log(dados);
-      const tbody = $("#tabelaPessoas tbody");
+      const tbody = $("#tabelaAgendas tbody");
       tbody.empty();
       dados.forEach((p) => {
         tbody.append(`
           <tr>
             <td>${p.id}</td>
-            <td>${p.nome}</td>
-            <td>${formatarTelefone(p.fone)}</td>
-            <td>${formatarData(p.aniversario)}</td>
-            <td>${p.cpf}</td>
+            <td>${p.nomePessoa}</td>
+            <td>${formatarTelefone(p.fonePessoa)}</td>
+            <td>${p.nomeMedico}</td>
+            <td>${p.tipoConsulta}</td>
+            <td>${formatarHorario(p.horario)}</td>
+            <td>${formatarData(p.dia)}</td>
             <td>
-              <button class="btn btn-warning btn-sm" onclick="editarPessoa(${p.id})">Editar</button>
-              <button class="btn btn-danger btn-sm" onclick="deletarPessoa(${p.id})">
+              <button class="btn btn-warning btn-sm" onclick="editarAgenda(${p.id})">Editar</button>
+              <button class="btn btn-danger btn-sm" onclick="deletarAgenda(${p.id})">
                 Deletar
               </button>
             </td>
@@ -125,27 +146,30 @@ function carregarPessoas() {
 /**
  * Cria uma nova pessoa (POST).
  */
-function criarPessoa() {
-  const pessoa = {
+function criarAgenda() {
+  const agenda = {
     id: parseInt($("#inputId").val()),
-    nome: $("#inputNome").val(),
-    fone: $("#inputFone").val(),
-    aniversario: $("#inputAniversario").val(),
-    cpf: $("#inputcpf").val()
+    nomePessoa: $("#inputNomePac").val(),
+    fonePessoa: $("#inputFonePac").val(),
+    nomeMedico: $("#inputNomeMed").val(),
+    tipoConsulta: $("#inputespecializacao").val(),
+    horario: $("#inputhorario").val(),
+    dia: $("#inputdia").val()
+
   };
   $.ajax({
-    url: API_URL + "/pessoas",
+    url: API_URL + "/agendas",
     method: "POST",
     contentType: "application/json",
-    data: JSON.stringify(pessoa),
+    data: JSON.stringify(agenda),
     success: function(res) {
       Swal.fire({
         icon: 'success',
         title: 'Sucesso',
         text: res.mensagem
       });
-      carregarPessoas();
-      $("#formPessoa")[0].reset();
+      carregarAgendas();
+      $("#formAgenda")[0].reset();
     },
     error: function(err) {
       console.error(err);
@@ -153,38 +177,44 @@ function criarPessoa() {
   });
 }
 
-function IncluirPessoa() {
+function IncluirAgenda() {
   $("#inputId").val(0);
   $("#inputId").attr("disabled", true);
-  $("#inputNome").val("");
-  $("#inputFone").val("");
-  $("#inputAniversario").val("");
-  $("#inputcpf").val("");
+  $("#inputNomePac").val("");
+  $("#inputFonePac").val("");
+  $("#inputNomeMed").val("");
+  $("#inputespecializacao").val("");
+  $("#inputhorario").val("");
+  $("#inputdia").val("");
   $('#staticBackdrop').modal('show');
 }
 
 function gravarDados() {
   let id = $("#inputId").val();
   if (id == 0) {
-    criarPessoa();
+    criarAgenda();
   } else {
-    atualizarPessoa();
+    atualizarAgenda();
   }
 }
 
 /**
  * Atualiza uma pessoa (PUT).
  */
-function atualizarPessoa() {
+function atualizarAgenda() {
   const pid = parseInt($("#inputId").val());
+  //const cpf = $("#inputcpf").val();
   const dados = {
-    nome: $("#inputNome").val(),
-    fone: $("#inputFone").val(),
-    aniversario: $("#inputAniversario").val(),
-    cpf: $("#inputcpf").val()
+    nomePessoa: $("#inputNomePac").val(),
+    fonePessoa: $("#inputFonePac").val(),
+    nomeMedico: $("#inputNomeMed").val(),
+    tipoConsulta: $("#inputespecializacao").val(),
+    horario: $("#inputhorario").val(),
+    dia: $("#inputdia").val()
+
   };
   $.ajax({
-    url: API_URL + "/pessoas/" + pid,
+    url: API_URL + "/agendas/" + pid,
     method: "PUT",
     contentType: "application/json",
     data: JSON.stringify(dados),
@@ -194,8 +224,8 @@ function atualizarPessoa() {
         title: 'Sucesso',
         text: res.mensagem
       });
-      carregarPessoas();
-      $("#formPessoa")[0].reset();
+      carregarAgendas();
+      $("#formAgenda")[0].reset();
     },
     error: function(err) {
       console.error(err);
@@ -206,10 +236,10 @@ function atualizarPessoa() {
 /**
  * Deleta uma pessoa (DELETE).
  */
-function deletarPessoa(pid) {
+function deletarAgenda(pid) {
   Swal.fire({
     title: 'Confirmação de Exclusão',
-    text: `Tem certeza que deseja excluir a pessoa de ID ${pid}?`,
+    text: `Tem certeza que deseja excluir o registro de ID ${pid}?`,
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33',
@@ -219,7 +249,7 @@ function deletarPessoa(pid) {
   }).then((result) => {
     if (result.isConfirmed) {
       $.ajax({
-        url: API_URL + "/pessoas/" + pid,
+        url: API_URL + "/agendas/" + pid,
         method: "DELETE",
         success: function(res) {
           Swal.fire({
@@ -227,7 +257,7 @@ function deletarPessoa(pid) {
             title: 'Sucesso',
             text: res.mensagem
           });
-          carregarPessoas();
+          carregarAgendas();
         },
         error: function(err) {
           console.error(err);
@@ -238,5 +268,5 @@ function deletarPessoa(pid) {
 }
 
 $(document).ready(function(){
-  carregarPessoas();
+  carregarAgendas();
 })

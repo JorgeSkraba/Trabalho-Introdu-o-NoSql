@@ -26,6 +26,7 @@ class MedicoController:
             nome=data["nome"],
             fone=data["fone"],
             aniversario=data["aniversario"],
+            cpf=data["cpf"],
             especializacao=data["especializacao"]
         )
         return self.model.atualizar_medico(medico)

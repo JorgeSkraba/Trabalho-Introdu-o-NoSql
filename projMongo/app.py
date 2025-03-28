@@ -1,13 +1,13 @@
 # app.py
 from flask import Flask, render_template
-from route import pessoa_bp
-from route import medico_bp
+from route import pessoa_bp, medico_bp, agenda_bp
 
 app = Flask(__name__)
 
 # Registro do Blueprint de pessoas
 app.register_blueprint(pessoa_bp)
 app.register_blueprint(medico_bp)
+app.register_blueprint(agenda_bp)
 
 @app.route("/")
 def index():
@@ -22,9 +22,13 @@ def view_pessoa():
 
 @app.route("/view/medico")
 def view_medico():
-    # Retorna o conteúdo do template 'pessoa.html'
-    # sem layout adicional
+
     return render_template("medico.html")
+
+@app.route("/view/agenda")
+def view_agenda():
+
+    return render_template("agenda.html")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=85)

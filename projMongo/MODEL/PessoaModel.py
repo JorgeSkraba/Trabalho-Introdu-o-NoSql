@@ -37,7 +37,8 @@ class PessoaModel:
             {"$set": {
                 "nome": pessoa.nome,
                 "fone": pessoa.fone,
-                "aniversario": pessoa.aniversario
+                "aniversario": pessoa.aniversario,
+                "cpf": pessoa.cpf
             }}
         )
         return result.modified_count  # 0 ou 1
