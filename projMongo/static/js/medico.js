@@ -59,6 +59,19 @@ function formatarData(dataISO) {
   return `${dia}/${mes}/${ano}`;
 }
 
+function formatarCPF(cpf) {
+  // Remove todos os caracteres que não sejam números
+  let cpfNumeros = cpf.replace(/\D/g, "");
+
+  // Verifica se tem 11 dígitos
+  if (cpfNumeros.length !== 11) {
+      return "CPF inválido";
+  }
+
+  // Formata o CPF no padrão XXX.XXX.XXX-XX
+  return cpfNumeros.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+}
+
 function editarMedico(pid) {
   // Busca a pessoa na variável global
   const medico = listaMedicos.find(p => p.id === pid);
@@ -109,7 +122,7 @@ function carregarMedicos() {
             <td>${p.nome}</td>
             <td>${formatarTelefone(p.fone)}</td>
             <td>${formatarData(p.aniversario)}</td>
-            <td>${p.cpf}</td>
+            <td>${formatarCPF(p.cpf)}</td>
             <td>${p.especializacao}</td>
             <td>
               <button class="btn btn-warning btn-sm" onclick="editarMedico(${p.id})">Editar</button>

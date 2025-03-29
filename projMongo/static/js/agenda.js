@@ -112,28 +112,6 @@
     }
   }
 
-  /*
-  * Formata a data
-  */
-  function formatarData(dataISO) {
-    // dataISO no formato "YYYY-MM-DD"
-    let ano = "";
-    let mes = "";
-    let dia = "";
-    try {
-      [ano, mes, dia] = dataISO.split("-");    
-    } catch (error) {
-      try {
-        [ano, mes, dia] = dataISO.split("/");
-      } catch (error) {
-        ano = "2000";
-        mes = "01";
-        dia = "01";
-      }  
-    }
-    return `${dia}/${mes}/${ano}`;
-  }
-
   function formatarHorario(horario) {
     if (!horario) return "Horário inválido";
 
@@ -379,18 +357,81 @@
     });
   }
 
-  $(document).ready(function(){
+    function formatarData(dataISO) {
+    if (!dataISO) return "";
 
-    carregarPessoas();
-    carregarMedicos();
-    // // Atualiza o telefone quando o paciente for selecionado
-    // $("#inputNomePac").on("change", atualizarPacienteSelecionado);
+    // Se já estiver no formato esperado, retorna
+    if (dataISO.includes("/")) return dataISO;
 
-    // carregarAgendas();
-    setTimeout(() => {
-      carregarAgendas(); // Aguarda um tempo para garantir que os pacientes foram carregados
-    }, 1000); // Ajuste o tempo conforme necessário
+    let [ano, mes, dia] = dataISO.split("-");
+    return `${dia}/${mes}/${ano}`;
+}
 
-    $("#inputNomePac").on("change", atualizarPacienteSelecionado);
-    $("#inputNomeMed").on("change", atualizarMedicoSelecionado);
-  })
+// Função para formatar a data (caso necessário)
+function formatarData(dataISO) {
+  if (!dataISO) return "";
+
+  // Se já estiver no formato esperado, retorna
+  if (dataISO.includes("/")) return dataISO;
+
+  let [ano, mes, dia] = dataISO.split("-");
+  return `${dia}/${mes}/${ano}`;
+}
+
+// Função para definir a data mínima para o campo de data
+function definirDataMinima() {
+  let hoje = new Date();
+  let ano = hoje.getFullYear();
+  let mes = String(hoje.getMonth() + 1).padStart(2, '0');
+  let dia = String(hoje.getDate()).padStart(2, '0');
+  
+  let dataMinima = `${ano}-${mes}-${dia}`;  // Formato necessário: YYYY-MM-DD
+  $("#inputdia").attr("min", dataMinima); // Garante que a data mínima seja hoje
+}
+
+// Função para validar a data selecionada
+function validarDataSelecionada() {
+  let dataInput = $("#inputdia").val();
+  if (!dataInput) return;
+
+  let dataSelecionada = new Date(dataInput);
+  let hoje = new Date();
+
+  // Ajusta as horas para 00:00:00 para evitar problemas de fuso horário
+  dataSelecionada.setHours(0, 0, 0, 0);
+  hoje.setHours(0, 0, 0, 0);
+
+  // Se a data selecionada for menor que hoje, mostramos o erro
+  if (dataSelecionada < hoje) {
+      Swal.fire({
+          icon: "error",
+          title: "Data inválida!",
+          text: "Você não pode selecionar um dia anterior a hoje.",
+      });
+      $("#inputdia").val(""); // Limpa o campo se for inválido
+  }
+}
+
+// Quando o documento estiver pronto
+$(document).ready(function() {
+  // Carregar dados de pacientes e médicos
+  carregarPessoas();
+  carregarMedicos();
+  
+  // Carregar agendamentos com um pequeno atraso
+  setTimeout(() => {
+      carregarAgendas();
+  }, 1000); 
+
+  // Definir a data mínima no campo de data (hoje)
+  definirDataMinima();
+
+  // Ações para o campo de pacientes e médicos
+  $("#inputNomePac").on("change", atualizarPacienteSelecionado);
+  $("#inputNomeMed").on("change", atualizarMedicoSelecionado);
+  
+  // Validação da data ao perder o foco
+  $("#inputdia").on("blur", function() {
+      validarDataSelecionada();  // Garantir que a data inserida seja válida
+  });
+});

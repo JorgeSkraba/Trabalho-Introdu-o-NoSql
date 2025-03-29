@@ -9,7 +9,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Gerenciar Medicos</h1>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Gerenciar Pessoas</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -29,8 +29,8 @@
           <input type="text" class="form-control" id="inputFone" required />
           </div>
           <div class="col-md-6">
-            <label for="inputAniversario" class="form-label">Aniversário</label>
-            <input type="date" class="form-control" id="inputAniversario" required />
+          <label for="inputAniversario" class="form-label">Aniversário</label>
+          <input type="date" class="form-control" id="inputAniversario" required />
           </div>
           <div class="col-md-6">
             <label for="inputcpf" class="form-label">Cpf</label>
@@ -38,39 +38,7 @@
           </div>
           <div class="col-md-6">
             <label for="inputespecializacao" class="form-label">Especialização</label>
-            <input type="text" class="form-control" id="inputespecializacao" required />
-          </div>
-          
-        <div class="modal-footer mt-2">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="gravarDados()">Gravar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="mt-4"> 
-    <table class="table table-striped" id="tabelaMedicos">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Fone</th>
-          <th>Aniversário</th>
-          <th>Cpf</th>
-          <th>Especialização</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  
-  <script src="/static/js/medico.js"></script>
-
-
-  <!-- <select class="form-control" id="inputespecializacao" required>
+            <select class="form-control" id="inputespecializacao" required>
               <option value="">Selecione a Especialização</option>
               <option value="clinica_medica">Clínica Médica</option>
               <option value="medicina_familia">Medicina de Família e Comunidade</option>
@@ -92,4 +60,33 @@
               <option value="pneumologia">Pneumologia</option>
               <option value="reumatologia">Reumatologia</option>
               <option value="urologia">Urologia</option>
-            </select> -->
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer mt-2">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="gravarDados()">Gravar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4"> 
+    <table class="table table-striped" id="tabelaMedicos">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Fone</th> 
+          <th>Aniversário</th>
+          <th>CPF</th>
+          <th>Especialização</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  
+  <script src="/static/js/medico.js"></script>

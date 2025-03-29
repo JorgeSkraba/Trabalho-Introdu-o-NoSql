@@ -15,20 +15,6 @@ $(document).ready(function() {
       });
     });
     //=========================================================
-    $("#linkMedicos").click(function(e) {
-      e.preventDefault();
-      $("#divPrincipal").load("/view/medico", function() {
-        // Após carregar o HTML, carregamos o script do CRUD
-        $.getScript("JS/medico.js")
-          .done(function() {
-            // Inicializa os eventos e carrega a lista de pessoas            
-          })
-          .fail(function() {
-            console.error("Não foi possível carregar medico.js");
-          });
-      });
-    });
-    //=========================================================
     $("#linkAgendas").click(function(e) {
       e.preventDefault();
       $("#divPrincipal").load("/view/agenda", function() {
@@ -43,16 +29,16 @@ $(document).ready(function() {
       });
     });
         //=========================================================
-        $("#linkTestes").click(function(e) {
+        $("#linkMedicos").click(function(e) {
           e.preventDefault();
-          $("#divPrincipal").load("/view/teste", function() {
+          $("#divPrincipal").load("/view/medico", function() {
             // Após carregar o HTML, carregamos o script do CRUD
-            $.getScript("JS/teste.js")
+            $.getScript("JS/medico.js")
               .done(function() {
                 // Inicializa os eventos e carrega a lista de pessoas            
               })
               .fail(function() {
-                console.error("Não foi possível carregar agenda.js");
+                console.error("Não foi possível carregar medico.js");
               });
           });
         });
