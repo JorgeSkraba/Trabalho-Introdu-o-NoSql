@@ -73,7 +73,7 @@ function editarPessoa(pid) {
 
   // Preenche os campos do formulário
   $("#inputId").val(pessoa.id);
-  $("#inputId").attr("disabled", false);
+  $("#inputId").attr("disabled", true);
   $("#inputNome").val(pessoa.nome);
   $("#inputFone").val(pessoa.fone); // se quiser manter o formato original
   $("#inputAniversario").val(pessoa.aniversario); // formato YYYY-MM-DD

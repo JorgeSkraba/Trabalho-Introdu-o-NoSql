@@ -30,5 +30,10 @@ def view_agenda():
 
     return render_template("agenda.html")
 
+@app.route("/view/teste")
+def view_teste():
+
+    return render_template("teste.html")
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=85)

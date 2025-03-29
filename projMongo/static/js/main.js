@@ -42,5 +42,19 @@ $(document).ready(function() {
           });
       });
     });
+        //=========================================================
+        $("#linkTestes").click(function(e) {
+          e.preventDefault();
+          $("#divPrincipal").load("/view/teste", function() {
+            // Após carregar o HTML, carregamos o script do CRUD
+            $.getScript("JS/teste.js")
+              .done(function() {
+                // Inicializa os eventos e carrega a lista de pessoas            
+              })
+              .fail(function() {
+                console.error("Não foi possível carregar agenda.js");
+              });
+          });
+        });
   });
   
