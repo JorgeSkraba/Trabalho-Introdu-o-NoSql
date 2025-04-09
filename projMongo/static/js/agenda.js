@@ -52,14 +52,14 @@
       method: "GET",
       success: function(dados) {
         listaMedicos = dados;
-        // Preenche os campos de pacientes com as opções
+        // Preenche os campos de medico com as opções
         const selectMedico = $("#inputNomeMed");
         selectMedico.empty();
         selectMedico.append(`<option value="">Selecione o Médico</option>`);
         dados.forEach((p) => {
           selectMedico.append(`<option value="${p.id}">${p.nome}</option>`);
         });
-        // Agora que a lista de pessoas foi carregada, carregar as agendas
+        // Agora que a lista de medicos foi carregada, carregar as agendas
         carregarAgendas();
       },
       error: function(err) {
@@ -76,7 +76,7 @@
     if (medico) {
       $("#inputespecializacao").val(medico.especializacao);
     } else {
-      $("#inputespecializacao").val("");  // Limpa o campo se nenhum paciente for selecionado
+      $("#inputespecializacao").val("");  // Limpa o campo se nenhum medico for selecionado
     }
   }
   /**
@@ -367,16 +367,6 @@
     return `${dia}/${mes}/${ano}`;
 }
 
-// Função para formatar a data (caso necessário)
-function formatarData(dataISO) {
-  if (!dataISO) return "";
-
-  // Se já estiver no formato esperado, retorna
-  if (dataISO.includes("/")) return dataISO;
-
-  let [ano, mes, dia] = dataISO.split("-");
-  return `${dia}/${mes}/${ano}`;
-}
 
 // Função para definir a data mínima para o campo de data
 function definirDataMinima() {
@@ -394,15 +384,15 @@ function validarDataSelecionada() {
   let dataInput = $("#inputdia").val();
   if (!dataInput) return;
 
-  let dataSelecionada = new Date(dataInput);
+  let dataSelecionada = $("#inputdia").val();
   let hoje = new Date();
-
-  // Ajusta as horas para 00:00:00 para evitar problemas de fuso horário
-  dataSelecionada.setHours(0, 0, 0, 0);
-  hoje.setHours(0, 0, 0, 0);
-
-  // Se a data selecionada for menor que hoje, mostramos o erro
-  if (dataSelecionada < hoje) {
+  let ano = hoje.getFullYear();
+  let mes = String(hoje.getMonth() + 1).padStart(2, '0');
+  let dia = String(hoje.getDate()).padStart(2, '0');
+  let dataHoje = `${ano}-${mes}-${dia}`;
+  
+  // Comparação como string
+  if (dataSelecionada < dataHoje) {
       Swal.fire({
           icon: "error",
           title: "Data inválida!",
